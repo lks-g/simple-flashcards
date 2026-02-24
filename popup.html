@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash karty</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <h2 data-i18n="appTitle">Moje Knižnica</h2>
+                <select id="lang-switcher" class="lang-switcher">
+                    <option value="sk">SK</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+            <button id="study-all-btn" class="primary-btn" data-i18n="studyAllBtn">Všetky ✨</button>
+        </header>
+
+        <div id="views-container" class="views-container">
+
+            <div id="dashboard-view" class="view">
+
+                <div class="section-title" data-i18n="dashboardRecentCard">Najnovšia karta</div>
+                <div id="recent-card-container" class="recent-card-container">
+                    <div class="empty-text" data-i18n="emptyCards">Zatiaľ žiadne karty.</div>
+                </div>
+
+                <div class="section-title" data-i18n="dashboardCategories">Kategórie</div>
+                <div id="category-grid" class="category-grid">
+                </div>
+
+            </div>
+
+            <div id="category-view" class="view hidden">
+                <div class="category-header-actions">
+                    <button id="back-to-dash-btn" class="secondary-btn" data-i18n="backToDash">⬅ Späť na
+                        nástenku</button>
+                    <button id="study-category-btn" class="primary-btn" data-i18n="studyCategory">Učiť sa túto
+                        kategóriu</button>
+                </div>
+
+                <div class="section-title" id="current-category-title">Detail kategórie</div>
+                <div id="category-cards-container" class="category-cards-container">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <button id="clear-btn" class="danger-btn" data-i18n="clearAllCards">Vymazať všetky karty</button>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <h3 data-i18n="editCardTitle">Upraviť kartu</h3>
+
+            <div class="form-group">
+                <label for="edit-category" data-i18n="editCategoryLabel">Kategória</label>
+                <select id="edit-category" class="form-control"></select>
+                <input type="text" id="new-category-input" class="form-control hidden"
+                    placeholder="Názov novej kategórie..." data-i18n-placeholder="newCategoryPlaceholder">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-question" data-i18n="editQuestionLabel">Otázka</label>
+                <textarea id="edit-question" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-answer" data-i18n="editAnswerLabel">Odpoveď</label>
+                <textarea id="edit-answer" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button id="cancel-edit-btn" class="secondary-btn" data-i18n="btnCancel">Zrušiť</button>
+                <button id="save-edit-btn" class="primary-btn" data-i18n="btnSave">Uložiť</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <h3 data-i18n="deleteModalTitle">Vymazať všetky karty?</h3>
+            <p style="color: #475569; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;"
+                data-i18n="deleteModalText">Naozaj chcete vymazať všetky flash karty? Táto akcia sa nedá vrátiť späť.
+            </p>
+
+            <div class="modal-actions">
+                <button id="cancel-delete-btn" class="secondary-btn" data-i18n="btnCancel">Zrušiť</button>
+                <button id="confirm-delete-btn" class="danger-btn" style="width: auto; padding: 8px 14px;"
+                    data-i18n="btnDelete">Vymazať</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="popup.js"></script>
+</body>
+
+</html>

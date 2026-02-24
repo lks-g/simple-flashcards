@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Študijný Mód - Flash Karty</title>
+    <link rel="stylesheet" href="study.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="study-container" id="study-container">
+
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <h2 data-i18n="studyEmpty">Zatiaľ žiadne flash karty.</h2>
+            <p data-i18n="studyEmptySubtitle">Vygenerujte si vlastné karty zo zvoleného textu na akejkoľvek webstránke
+                pomocou pravého tlačidla a
+                vráťte sa späť.</p>
+        </div>
+
+        <div class="flashcard-scene" id="flashcard-scene">
+            <div class="flashcard-category" id="flashcard-category">Kategória</div>
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-face flashcard-front">
+                    <div class="content" id="question-text">Otázka</div>
+                    <div class="hint" data-i18n="hintFlip">Kliknite pre zobrazenie odpovede</div>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <div class="content" id="answer-text">Odpoveď</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls" id="controls">
+            <button class="nav-btn" id="prev-btn" aria-label="Predchádzajúca karta">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+            </button>
+
+            <div class="progress-indicator" id="progress-indicator">
+                Karta 1 z 5
+            </div>
+
+            <button class="nav-btn" id="next-btn" aria-label="Nasledujúca karta">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6" />
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="study.js"></script>
+</body>
+
+</html>

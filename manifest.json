@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Flashcard Generator",
+    "version": "1.0",
+    "description": "Generates educational flashcards from selected text using Gemini AI.",
+    "permissions": [
+        "contextMenus",
+        "storage",
+        "notifications"
+    ],
+    "host_permissions": [
+        "https://generativelanguage.googleapis.com/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Flashcard Generator"
+    }
+}
