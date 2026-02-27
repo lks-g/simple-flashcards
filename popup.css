@@ -1,3 +1,7 @@
+html {
+    background: transparent;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     width: 400px;
@@ -10,6 +14,7 @@ body {
     padding: 0;
     background-color: #f8fafc;
     color: #0f172a;
+    border-radius: 12px;
 }
 
 .container {
@@ -43,6 +48,27 @@ body {
     gap: 12px;
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s;
+    line-height: 1;
+}
+
+.icon-btn:hover {
+    background: #e2e8f0;
+}
+
 .lang-switcher {
     background: #e2e8f0;
     border: none;
@@ -55,6 +81,7 @@ body {
     cursor: pointer;
 }
 
+/* VIEWS & TRANSITIONS */
 .views-container {
     flex-grow: 1;
     position: relative;
@@ -104,7 +131,8 @@ body {
     transform: translateX(0);
 }
 
-#category-view:not(.hidden) {
+#category-view:not(.hidden),
+#settings-view:not(.hidden) {
     opacity: 1;
     transform: translateX(0);
 }
@@ -123,6 +151,7 @@ body {
     margin-top: 5px;
 }
 
+/* DASHBOARD ELEMENTS */
 .recent-card-container {
     margin-bottom: 24px;
 }
@@ -172,6 +201,7 @@ body {
     border-radius: 999px;
 }
 
+/* CATEGORY DETAIL */
 .category-header-actions {
     display: flex;
     justify-content: space-between;
@@ -186,6 +216,7 @@ body {
     padding-bottom: 15px;
 }
 
+/* FLASHCARD */
 .flashcard {
     background: #ffffff;
     border-radius: 12px;
@@ -235,6 +266,7 @@ body {
     }
 }
 
+/* BUTTONS */
 button {
     cursor: pointer;
     border: none;
@@ -292,6 +324,7 @@ button {
     background-color: #f1f5f9;
 }
 
+/* FOOTER */
 .footer {
     text-align: center;
     margin-top: 10px;
@@ -314,6 +347,7 @@ button {
     background-color: #fef2f2;
 }
 
+/* MODAL */
 .modal-backdrop {
     position: fixed;
     top: 0;

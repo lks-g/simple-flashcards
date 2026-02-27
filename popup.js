@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Top-level DOM elements
     const dashboardView = document.getElementById("dashboard-view");
     const categoryView = document.getElementById("category-view");
+    const settingsView = document.getElementById("settings-view");
     const recentCardContainer = document.getElementById("recent-card-container");
     const categoryGrid = document.getElementById("category-grid");
     const categoryCardsContainer = document.getElementById("category-cards-container");
@@ -13,6 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const studyCategoryBtn = document.getElementById("study-category-btn");
     const clearBtn = document.getElementById("clear-btn");
     const langSwitcher = document.getElementById("lang-switcher");
+    const settingsBtn = document.getElementById("settings-btn");
+    const backFromSettingsBtn = document.getElementById("back-from-settings-btn");
+    const fullscreenBtn = document.getElementById("fullscreen-btn");
+
+    // Settings elements
+    const apiKeyInput = document.getElementById("api-key-input");
+    const saveApiKeyBtn = document.getElementById("save-api-key-btn");
+    const apiKeyStatus = document.getElementById("api-key-status");
 
     // Edit Modal elements
     const editModal = document.getElementById("edit-modal");
@@ -32,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ADD_NEW_CAT_VALUE = "__ADD_NEW__";
     let editingCardIndex = null;
     let allFlashcards = [];
-    let currentCategoryView = null;
+    let currentCategoryViewName = null;
     let currentLang = "sk";
 
     // Initial Load
@@ -59,10 +68,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function loadData() {
-        chrome.storage.local.get({ flashcards: [], appLanguage: "sk" }, (result) => {
+        chrome.storage.local.get({ flashcards: [], appLanguage: "sk", geminiApiKey: "" }, (result) => {
             allFlashcards = result.flashcards;
             currentLang = result.appLanguage;
             langSwitcher.value = currentLang;
+
+            // Pre-fill API key input (show masked)
+            if (result.geminiApiKey) {
+                apiKeyInput.value = result.geminiApiKey;
+            }
 
             applyTranslations();
 
@@ -71,8 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             renderDashboard();
-            if (currentCategoryView) {
-                renderCategoryView(currentCategoryView);
+            if (currentCategoryViewName) {
+                renderCategoryView(currentCategoryViewName);
             }
         });
     }
@@ -82,29 +96,58 @@ document.addEventListener("DOMContentLoaded", () => {
         chrome.storage.local.set({ appLanguage: currentLang }, () => {
             applyTranslations();
             renderDashboard();
-            if (currentCategoryView) {
-                renderCategoryView(currentCategoryView);
+            if (currentCategoryViewName) {
+                renderCategoryView(currentCategoryViewName);
             }
         });
     });
 
     // --- NAVIGATION ---
+    function showView(viewToShow) {
+        [dashboardView, categoryView, settingsView].forEach(v => v.classList.add("hidden"));
+        viewToShow.classList.remove("hidden");
+    }
+
     studyAllBtn.addEventListener("click", () => {
         chrome.tabs.create({ url: "study.html" });
     });
 
     backToDashBtn.addEventListener("click", () => {
-        currentCategoryView = null;
-        categoryView.classList.add("hidden");
-        dashboardView.classList.remove("hidden");
+        currentCategoryViewName = null;
+        showView(dashboardView);
     });
 
     studyCategoryBtn.addEventListener("click", () => {
-        if (currentCategoryView) {
-            chrome.tabs.create({ url: "study.html?category=" + encodeURIComponent(currentCategoryView) });
+        if (currentCategoryViewName) {
+            chrome.tabs.create({ url: "study.html?category=" + encodeURIComponent(currentCategoryViewName) });
         }
     });
 
+    settingsBtn.addEventListener("click", () => {
+        apiKeyStatus.style.display = "none";
+        showView(settingsView);
+    });
+
+    backFromSettingsBtn.addEventListener("click", () => {
+        showView(dashboardView);
+    });
+
+    fullscreenBtn.addEventListener("click", () => {
+        chrome.tabs.create({ url: "dashboard.html" });
+    });
+
+    // --- SETTINGS ---
+    saveApiKeyBtn.addEventListener("click", () => {
+        const key = apiKeyInput.value.trim();
+        if (!key) return;
+        chrome.storage.local.set({ geminiApiKey: key }, () => {
+            apiKeyStatus.style.display = "block";
+            apiKeyStatus.textContent = getStr("apiKeySaved");
+            setTimeout(() => { apiKeyStatus.style.display = "none"; }, 3000);
+        });
+    });
+
+    // --- DELETE ---
     clearBtn.addEventListener("click", () => {
         deleteModal.classList.remove("hidden");
     });
@@ -116,9 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmDeleteBtn.addEventListener("click", () => {
         chrome.storage.local.set({ flashcards: [] }, () => {
             deleteModal.classList.add("hidden");
-            currentCategoryView = null;
-            categoryView.classList.add("hidden");
-            dashboardView.classList.remove("hidden");
+            currentCategoryViewName = null;
+            showView(dashboardView);
             loadData();
         });
     });
@@ -152,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
             grouped[cat]++;
         });
 
-        // Sort categories alphabetically
         const sortedCategories = Object.keys(grouped).sort();
 
         sortedCategories.forEach(cat => {
@@ -163,8 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="category-tile-count">${grouped[cat]} ${getStr("cardsCount")}</div>
             `;
             tile.addEventListener("click", () => {
-                dashboardView.classList.add("hidden");
-                categoryView.classList.remove("hidden");
+                showView(categoryView);
                 renderCategoryView(cat);
             });
             categoryGrid.appendChild(tile);
@@ -173,12 +213,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- CATEGORY VIEW RENDER ---
     function renderCategoryView(categoryName) {
-        currentCategoryView = categoryName;
+        currentCategoryViewName = categoryName;
         currentCategoryTitle.textContent = `${getStr("categoryPrefix")} ${categoryName}`;
         categoryCardsContainer.innerHTML = "";
         const generalCatName = getStr("generalCategory");
 
-        // Reverse to show newest first
         const categoryCards = [...allFlashcards]
             .reverse()
             .filter(c => (c.category || generalCatName) === categoryName);
@@ -234,17 +273,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return cardElement;
     }
 
-    // --- MODAL LOGIC ---
+    // --- EDIT MODAL ---
     function openEditModal(card) {
         editingCardIndex = card.originalIndex;
         const generalCatName = getStr("generalCategory");
 
-        // Populate Categories Dropdown
         const uniqueCategories = new Set(allFlashcards.map(c => c.category || generalCatName));
-
         editCategorySelect.innerHTML = "";
 
-        // Add existing categories
         [...uniqueCategories].sort().forEach(cat => {
             const option = document.createElement("option");
             option.value = cat;
@@ -252,13 +288,11 @@ document.addEventListener("DOMContentLoaded", () => {
             editCategorySelect.appendChild(option);
         });
 
-        // Add "Add New..." option
         const addNewOption = document.createElement("option");
         addNewOption.value = ADD_NEW_CAT_VALUE;
         addNewOption.textContent = getStr("addNewCategoryOption");
         editCategorySelect.appendChild(addNewOption);
 
-        // Pre-fill data
         const currentCat = card.category || generalCatName;
         if (uniqueCategories.has(currentCat)) {
             editCategorySelect.value = currentCat;
@@ -266,11 +300,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         newCategoryInput.value = "";
         newCategoryInput.classList.add("hidden");
-
         editQuestionInput.value = card.question;
         editAnswerInput.value = card.answer;
 
-        // Show Modal
         editModal.classList.remove("hidden");
     }
 
@@ -305,15 +337,13 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Apply edits
         allFlashcards[editingCardIndex].question = question;
         allFlashcards[editingCardIndex].answer = answer;
         allFlashcards[editingCardIndex].category = category;
 
-        // Save
         chrome.storage.local.set({ flashcards: allFlashcards }, () => {
             closeEditModal();
-            loadData(); // Re-render whichever view is active
+            loadData();
         });
     });
 

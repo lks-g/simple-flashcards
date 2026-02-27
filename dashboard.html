@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recallify — Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard-shell">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h1>Recallify</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" id="nav-all" data-i18n="dashboardCategories">Kategórie</button>
+            </nav>
+            <div class="sidebar-footer">
+                <select id="lang-switcher" class="lang-switcher-dash">
+                    <option value="sk">SK</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="main-header">
+                <h2 id="main-title" data-i18n="dashboardCategories">Kategórie</h2>
+                <div class="header-actions">
+                    <button id="study-all-btn" class="btn-primary" data-i18n="studyAllBtn">Všetky ✨</button>
+                    <button id="clear-btn" class="btn-danger-outline" data-i18n="clearAllCards">Vymazať všetky</button>
+                </div>
+            </header>
+
+            <!-- STATS BAR -->
+            <div class="stats-bar" id="stats-bar"></div>
+
+            <!-- CONTENT AREA -->
+            <div class="content-area" id="content-area">
+                <!-- Dynamic content rendered via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div id="edit-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 data-i18n="editCardTitle">Upraviť kartu</h3>
+            <div class="field">
+                <label for="edit-category" data-i18n="editCategoryLabel">Kategória</label>
+                <select id="edit-category" class="input"></select>
+                <input type="text" id="new-category-input" class="input hidden" placeholder="Nová kategória..."
+                    data-i18n-placeholder="newCategoryPlaceholder">
+            </div>
+            <div class="field">
+                <label for="edit-question" data-i18n="editQuestionLabel">Otázka</label>
+                <textarea id="edit-question" class="input" rows="3"></textarea>
+            </div>
+            <div class="field">
+                <label for="edit-answer" data-i18n="editAnswerLabel">Odpoveď</label>
+                <textarea id="edit-answer" class="input" rows="3"></textarea>
+            </div>
+            <div class="modal-btns">
+                <button id="cancel-edit-btn" class="btn-secondary" data-i18n="btnCancel">Zrušiť</button>
+                <button id="save-edit-btn" class="btn-primary" data-i18n="btnSave">Uložiť</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div id="delete-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 data-i18n="deleteModalTitle">Vymazať všetky karty?</h3>
+            <p class="modal-text" data-i18n="deleteModalText">Naozaj chcete vymazať všetky flash karty?</p>
+            <div class="modal-btns">
+                <button id="cancel-delete-btn" class="btn-secondary" data-i18n="btnCancel">Zrušiť</button>
+                <button id="confirm-delete-btn" class="btn-danger" data-i18n="btnDelete">Vymazať</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

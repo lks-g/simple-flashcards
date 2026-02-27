@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Flashcard Generator",
+    "name": "Recallify",
     "version": "1.0",
-    "description": "Generates educational flashcards from selected text using Gemini AI.",
+    "description": "Recallify — Learn directly from the web with AI-powered flashcards.",
     "permissions": [
         "contextMenus",
         "storage",
@@ -16,6 +16,6 @@
     },
     "action": {
         "default_popup": "popup.html",
-        "default_title": "Flashcard Generator"
+        "default_title": "Recallify"
     }
 }

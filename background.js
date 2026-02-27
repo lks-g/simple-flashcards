@@ -1,9 +1,10 @@
-const GEMINI_API_KEY = "API_KEY"; // Insert your Gemini API key here
+// Recallify — Background Service Worker
+// API key is now loaded from chrome.storage.local (no hardcoded key)
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "create-flashcard",
-        title: "Vytvoriť Flash kartu",
+        title: "Recallify — Vytvoriť kartu",
         contexts: ["selection"]
     });
 });
@@ -12,30 +13,51 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (info.menuItemId === "create-flashcard") {
         const selectedText = info.selectionText;
 
-        chrome.storage.local.get({ appLanguage: "sk" }, async (result) => {
+        chrome.storage.local.get({ appLanguage: "sk", geminiApiKey: "" }, async (result) => {
             const appLang = result.appLanguage;
-            const notifLoadingMsg = appLang === "en" ? "Generating flashcard... AI is processing text." : "Generujem flash kartu... AI spracováva text.";
+            const apiKey = result.geminiApiKey;
+
+            // Check for API key
+            if (!apiKey) {
+                const noKeyTitle = appLang === "en" ? "API Key Missing" : "Chýba API kľúč";
+                const noKeyMsg = appLang === "en"
+                    ? "Please set your Gemini API key in the Recallify extension settings (⚙️)."
+                    : "Prosím, nastavte si Gemini API kľúč v nastaveniach rozšírenia Recallify (⚙️).";
+
+                chrome.notifications.create("nokey-" + Date.now(), {
+                    type: "basic",
+                    iconUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+                    title: noKeyTitle,
+                    message: noKeyMsg,
+                    priority: 2
+                });
+                return;
+            }
+
+            const notifLoadingMsg = appLang === "en"
+                ? "Generating flashcard... AI is processing text."
+                : "Generujem flash kartu... AI spracováva text.";
 
             const notificationId = "loading-" + Date.now();
             chrome.notifications.create(notificationId, {
                 type: "basic",
                 iconUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-                title: "Flashcard Generator",
+                title: "Recallify",
                 message: notifLoadingMsg,
                 priority: 0
             });
 
-            await generateFlashcard(selectedText, notificationId);
+            await generateFlashcard(selectedText, notificationId, apiKey);
         });
     }
 });
 
-async function generateFlashcard(text, notificationId) {
+async function generateFlashcard(text, notificationId, apiKey) {
     try {
         const languageData = await chrome.storage.local.get({ appLanguage: "sk" });
         const appLang = languageData.appLanguage;
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
         let prompt;
         if (appLang === "en") {
@@ -85,8 +107,6 @@ Text: "${text}"`;
             const defCategory = lang === "en" ? "General" : "Všeobecné";
 
             chrome.storage.local.set({ flashcards: updatedFlashcards }, () => {
-                console.log("Flash karta s kategóriou bola úspešne uložená.");
-
                 chrome.notifications.clear(notificationId);
                 chrome.notifications.create("success-" + Date.now(), {
                     type: "basic",
@@ -99,12 +119,14 @@ Text: "${text}"`;
         });
 
     } catch (error) {
-        console.error("Chyba pri generovaní flash karty:", error);
+        console.error("Recallify error:", error);
         chrome.notifications.clear(notificationId);
         chrome.storage.local.get({ appLanguage: "sk" }, (result) => {
             const lang = result.appLanguage;
             const notifErrorTitle = lang === "en" ? "Error" : "Chyba";
-            const notifErrorMsg = lang === "en" ? "Failed to create flashcard. Please try again." : "Nepodarilo sa vytvoriť flash kartu. Skúste to znova.";
+            const notifErrorMsg = lang === "en"
+                ? "Failed to create flashcard. Please try again."
+                : "Nepodarilo sa vytvoriť flash kartu. Skúste to znova.";
 
             chrome.notifications.create("error-" + Date.now(), {
                 type: "basic",

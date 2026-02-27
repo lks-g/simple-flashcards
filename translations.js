@@ -1,7 +1,7 @@
 const i18n = {
     sk: {
-        appTitle: "Moja Knižnica",
-        studyAllBtn: "Všetky ✨",
+        appTitle: "Recallify",
+        studyAllBtn: "Študuj Všetky",
         dashboardRecentCard: "Najnovšia karta",
         dashboardCategories: "Kategórie",
         emptyCards: "Zatiaľ žiadne karty. Vytvorte prvú!",
@@ -33,11 +33,18 @@ const i18n = {
         studyEmptySubtitle: "Vygenerujte si vlastné karty zo zvoleného textu na akejkoľvek webstránke pomocou pravého tlačidla a vráťte sa späť.",
         hintFlip: "Kliknite pre zobrazenie odpovede",
         cardIndexPrefix: "Karta",
-        cardIndexOf: "z"
+        cardIndexOf: "z",
+        settingsTitle: "Nastavenia",
+        apiKeyLabel: "Gemini API kľúč",
+        apiKeyPlaceholder: "Vložte svoj API kľúč...",
+        btnSaveSettings: "Uložiť kľúč",
+        apiKeySaved: "API kľúč bol úspešne uložený!",
+        apiKeyMissing: "Prosím, nastavte si API kľúč v nastaveniach rozšírenia.",
+        openFullscreen: "Otvoriť na celú obrazovku"
     },
     en: {
-        appTitle: "My Library",
-        studyAllBtn: "Study All ✨",
+        appTitle: "Recallify",
+        studyAllBtn: "Study All",
         dashboardRecentCard: "Most Recent Card",
         dashboardCategories: "Categories",
         emptyCards: "No cards yet. Create your first one!",
@@ -69,6 +76,13 @@ const i18n = {
         studyEmptySubtitle: "Generate your own cards from selected text on any website using the right-click menu and come back.",
         hintFlip: "Click to show answer",
         cardIndexPrefix: "Card",
-        cardIndexOf: "of"
+        cardIndexOf: "of",
+        settingsTitle: "Settings",
+        apiKeyLabel: "Gemini API Key",
+        apiKeyPlaceholder: "Paste your API key...",
+        btnSaveSettings: "Save Key",
+        apiKeySaved: "API key saved successfully!",
+        apiKeyMissing: "Please set your API key in the extension settings.",
+        openFullscreen: "Open Full Screen"
     }
 };
