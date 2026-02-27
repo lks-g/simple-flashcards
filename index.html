@@ -19,15 +19,15 @@
         <nav class="nav">
             <div class="nav-brand">Recallify</div>
             <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#install">Install</a>
+                <a href="#features" data-i18n="nav.features">Features</a>
+                <a href="#install" data-i18n="nav.install">Install</a>
             </div>
         </nav>
 
         <div class="hero-content">
-            <div class="badge">✨ AI-Powered Learning</div>
-            <h1>Learn directly from the web<br>with <span class="gradient-text">AI flashcards</span></h1>
-            <p class="hero-subtitle">
+            <div class="badge" data-i18n="badge">✨ AI-Powered Learning</div>
+            <h1 data-i18n-html="hero.title">Learn directly from the web<br>with <span class="gradient-text">AI flashcards</span></h1>
+            <p class="hero-subtitle" data-i18n="hero.subtitle">
                 Select any text on any webpage, right-click, and Recallify instantly generates smart study flashcards
                 using Google Gemini AI. Study smarter, not harder.
             </p>
@@ -39,78 +39,151 @@
                         <polyline points="7 10 12 15 17 10" />
                         <line x1="12" y1="15" x2="12" y2="3" />
                     </svg>
-                    Download Extension (.zip)
+                    <span data-i18n="hero.download">Download Extension (.zip)</span>
                 </a>
-                <a href="#install" class="btn-hero-secondary">How to install →</a>
+                <a href="#install" class="btn-hero-secondary" data-i18n="hero.install">How to install →</a>
             </div>
         </div>
     </section>
 
     <!-- FEATURES -->
     <section class="features" id="features">
-        <h2>Why Recallify?</h2>
+        <h2 data-i18n="features.title">Why Recallify?</h2>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">🧠</div>
-                <h3>AI-Generated Cards</h3>
-                <p>Gemini AI reads your selected text and generates question-answer flashcards instantly.</p>
+                <h3 data-i18n="features.card1.title">AI-Generated Cards</h3>
+                <p data-i18n="features.card1.desc">Gemini AI reads your selected text and generates question-answer flashcards instantly.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🏷️</div>
-                <h3>Auto Categories</h3>
-                <p>Cards are automatically sorted into smart categories based on the content you're learning.</p>
+                <h3 data-i18n="features.card2.title">Auto Categories</h3>
+                <p data-i18n="features.card2.desc">Cards are automatically sorted into smart categories based on the content you're learning.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🔄</div>
-                <h3>Flip to Study</h3>
-                <p>Beautiful 3D flip animations in a dedicated distraction-free study mode.</p>
+                <h3 data-i18n="features.card3.title">Flip to Study</h3>
+                <p data-i18n="features.card3.desc">Beautiful 3D flip animations in a dedicated distraction-free study mode.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🌐</div>
-                <h3>SK / EN Support</h3>
-                <p>Full internationalization — switch the entire UI and AI generation between Slovak and English.</p>
+                <h3 data-i18n="features.card4.title">SK / EN Support</h3>
+                <p data-i18n="features.card4.desc">Full internationalization — switch the entire UI and AI generation between Slovak and English.</p>
             </div>
         </div>
     </section>
 
     <!-- INSTALL GUIDE -->
     <section class="install-section" id="install">
-        <h2>Manual Installation Guide</h2>
-        <p class="install-subtitle">Recallify isn't on the Chrome Web Store yet. Here's how to install it in 3 easy
+        <h2 data-i18n="install.title">Manual Installation Guide</h2>
+        <p class="install-subtitle" data-i18n="install.subtitle">Recallify isn't on the Chrome Web Store yet. Here's how to install it in 3 easy
             steps:</p>
         <div class="steps-grid">
             <div class="step-card">
                 <div class="step-number">1</div>
-                <h3>Unzip the file</h3>
-                <p>Download the <strong>.zip</strong> file above and extract it to any folder on your computer.</p>
+                <h3 data-i18n="install.step1.title">Unzip the file</h3>
+                <p data-i18n-html="install.step1.desc">Download the <strong>.zip</strong> file above and extract it to any folder on your computer.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">2</div>
-                <h3>Open Extensions page</h3>
-                <p>In Chrome, navigate to <code>chrome://extensions</code> or go to Menu → More Tools → Extensions.</p>
+                <h3 data-i18n="install.step2.title">Open Extensions page</h3>
+                <p data-i18n-html="install.step2.desc">In Chrome, navigate to <code>chrome://extensions</code> or go to Menu → More Tools → Extensions.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">3</div>
-                <h3>Load the extension</h3>
-                <p>Enable <strong>Developer Mode</strong> (top right toggle), then click <strong>Load unpacked</strong>
+                <h3 data-i18n="install.step3.title">Load the extension</h3>
+                <p data-i18n-html="install.step3.desc">Enable <strong>Developer Mode</strong> (top right toggle), then click <strong>Load unpacked</strong>
                     and select the unzipped folder.</p>
             </div>
         </div>
     </section>
 
+    <!-- LANGUAGE TOGGLE -->
+    <button class="language-toggle" id="language-toggle" title="Toggle language">
+        <span class="lang-flag">🇬🇧</span>
+        <span class="lang-code">EN</span>
+    </button>
+
     <!-- FOOTER -->
     <footer class="footer">
-        <p>Made with ❤️ for learners everywhere. &copy; 2026 Recallify.</p>
+        <p data-i18n="footer">Made with ❤️ for learners everywhere. © 2026 Recallify.</p>
     </footer>
 
+    <script src="translations.js"></script>
     <script>
+        // Initialize language system
+        let currentLanguage = localStorage.getItem('language') || 'en';
+        let originalDownloadButtonText = null;
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            applyTranslations();
+            updateLanguageToggle();
+        }
+
+        function applyTranslations() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+
+            // Handle HTML content for elements with data-i18n-html
+            const htmlElements = document.querySelectorAll('[data-i18n-html]');
+            htmlElements.forEach(element => {
+                const key = element.getAttribute('data-i18n-html');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.innerHTML = translations[currentLanguage][key];
+                }
+            });
+
+            // Update download button text (preserve SVG icon)
+            const downloadBtn = document.getElementById('download-btn');
+            if (downloadBtn) {
+                const svg = downloadBtn.querySelector('svg');
+                const textSpan = downloadBtn.querySelector('[data-i18n]');
+                if (textSpan) {
+                    if (svg) {
+                        downloadBtn.innerHTML = '';
+                        downloadBtn.appendChild(svg);
+                        downloadBtn.appendChild(textSpan);
+                    }
+                    textSpan.textContent = translations[currentLanguage]['hero.download'];
+                }
+            }
+        }
+
+        function updateLanguageToggle() {
+            const toggle = document.getElementById('language-toggle');
+            if (currentLanguage === 'en') {
+                toggle.innerHTML = '<span class="lang-flag">🇬🇧</span><span class="lang-code">EN</span>';
+            } else {
+                toggle.innerHTML = '<span class="lang-flag">🇸🇰</span><span class="lang-code">SK</span>';
+            }
+        }
+
+        // Language toggle button handler
+        document.getElementById('language-toggle').addEventListener('click', () => {
+            setLanguage(currentLanguage === 'en' ? 'sk' : 'en');
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTranslations();
+            updateLanguageToggle();
+        });
+
         // Handle download button
         document.getElementById('download-btn').addEventListener('click', async (e) => {
             const downloadBtn = e.currentTarget;
-            const originalText = downloadBtn.innerHTML;
+            const originalHTML = downloadBtn.innerHTML;
             
             try {
-                // Show loading state
+                // Show loading state (preserve SVG)
+                const svg = downloadBtn.querySelector('svg');
                 downloadBtn.innerHTML = '⏳ Downloading...';
                 downloadBtn.style.opacity = '0.7';
                 
@@ -123,7 +196,7 @@
                 // If fetch succeeds, the native download attribute will handle it
                 // This is just for visual feedback
                 setTimeout(() => {
-                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.innerHTML = originalHTML;
                     downloadBtn.style.opacity = '1';
                 }, 2000);
                 
@@ -134,7 +207,7 @@
                 
                 // Retry after 3 seconds
                 setTimeout(() => {
-                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.innerHTML = originalHTML;
                 }, 3000);
             }
         });
