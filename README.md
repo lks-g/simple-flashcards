@@ -32,7 +32,7 @@ A powerful Chrome extension for creating AI-powered flashcards from any text con
 - Google Chrome or Chromium-based browser
 - A free Google Gemini API key ([Get one here](https://aistudio.google.com/app/apikey))
 
-### 🚀 Installation
+### 🚀 Installation (Chrome)
 
 1. **Clone or download** this repository
 2. Open Chrome and navigate to `chrome://extensions/`
@@ -40,6 +40,15 @@ A powerful Chrome extension for creating AI-powered flashcards from any text con
 4. Click **Load unpacked**
 5. Select the project folder
 6. The Recallify extension will appear in your Chrome toolbar
+
+### 🦊 Installation (Firefox)
+
+1. **Clone or download** this repository
+2. Open Firefox and navigate to `about:debugging`
+3. Click on **This Firefox** in the left sidebar
+4. Click **Load Temporary Add-on...**
+5. Select any file (e.g., `manifest.json`) inside the extension or root project folder
+6. The Recallify extension will appear in your Firefox toolbar
 
 ### 🔑 Getting Your Gemini API Key
 
@@ -126,7 +135,7 @@ This project is open source. Feel free to use, modify, and distribute.
 - Google Chrome alebo prehliadač na báze Chromium
 - Bezplatný API kľúč Google Gemini ([Získajte ho tu](https://aistudio.google.com/app/apikey))
 
-### 🚀 Inštalácia
+### 🚀 Inštalácia (Chrome)
 
 1. **Klonujte alebo stiahnite** toto úložisko
 2. Otvorte Chrome a prejdite na `chrome://extensions/`
@@ -134,6 +143,15 @@ This project is open source. Feel free to use, modify, and distribute.
 4. Kliknite na **Načítať rozbalenú položku**
 5. Vyberte priečinok projektu
 6. Rozšírenie Recallify sa objaví na paneli vášho prehliadača Chrome
+
+### 🦊 Inštalácia (Firefox)
+
+1. **Klonujte alebo stiahnite** toto úložisko
+2. Otvorte Firefox a prejdite na `about:debugging`
+3. Kliknite na **This Firefox** (Tento Firefox) v ľavom bočnom paneli
+4. Kliknite na **Load Temporary Add-on...** (Načítať dočasný doplnok...)
+5. Vyberte ľubovoľný súbor (napr. `manifest.json`) z priečinku rozšírenia alebo koreňového priečinku projektu
+6. Rozšírenie Recallify sa objaví na paneli vášho prehliadača Firefox
 
 ### 🔑 Získanie API kľúča Gemini
 

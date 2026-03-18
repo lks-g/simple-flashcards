@@ -23,6 +23,7 @@
             </div>
             <div class="header-right">
                 <button id="settings-btn" class="icon-btn" title="Settings">⚙️</button>
+                <button id="quiz-btn" class="secondary-btn" data-i18n="quizBtn" style="margin-right: 8px;">Kvíz 🧠</button>
                 <button id="study-all-btn" class="primary-btn" data-i18n="studyAllBtn">Všetky ✨</button>
             </div>
         </header>
@@ -62,10 +63,27 @@
                 <h3 data-i18n="settingsTitle" style="margin: 16px 0 8px;">Nastavenia</h3>
 
                 <div class="form-group">
+                    <label for="llm-select" data-i18n="llmSelectLabel">Vyberte AI model:</label>
+                    <select id="llm-select" class="form-control" style="margin-bottom: 12px;">
+                        <option value="" disabled selected data-i18n="loadingModels">Loading models...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="api-key-input" data-i18n="apiKeyLabel">Gemini API kľúč</label>
                     <input type="password" id="api-key-input" class="form-control" placeholder="Vložte svoj API kľúč..."
                         data-i18n-placeholder="apiKeyPlaceholder">
                 </div>
+
+                <details style="margin-bottom: 16px; font-size: 0.85rem; color: #475569; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <summary style="cursor: pointer; font-weight: 500; color: #3b82f6;" data-i18n="apiGuideTitle">Ako získať API kľúč?</summary>
+                    <div style="margin-top: 8px; line-height: 1.5;">
+                        <div data-i18n="apiGuideStep1">1. Prihláste sa do Google AI Studio.</div>
+                        <div data-i18n="apiGuideStep2">2. Kliknite na 'Create API key'.</div>
+                        <div data-i18n="apiGuideStep3">3. Skopírujte kľúč a vložte ho vyššie.</div>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" style="display: inline-block; margin-top: 6px; color: #3b82f6; text-decoration: none; font-weight: 500;" data-i18n="apiGuideLink">Získať API kľúč tu</a>
+                    </div>
+                </details>
                 <button id="save-api-key-btn" class="primary-btn" style="width: 100%;"
                     data-i18n="btnSaveSettings">Uložiť kľúč</button>
                 <p id="api-key-status" style="color: #10b981; font-size: 0.85rem; margin-top: 10px; display: none;"

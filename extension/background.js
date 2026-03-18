@@ -54,23 +54,26 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 async function generateFlashcard(text, notificationId, apiKey) {
     try {
-        const languageData = await chrome.storage.local.get({ appLanguage: "sk" });
+        const languageData = await chrome.storage.local.get({ appLanguage: "sk", selectedLLM: "gemini-1.5-flash" });
         const appLang = languageData.appLanguage;
+        const llmModel = languageData.selectedLLM;
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${llmModel}:generateContent?key=${apiKey}`;
 
         let prompt;
         if (appLang === "en") {
             prompt = `Read the following text and generate 1 study flashcard (Question and Answer) in English.
 Focus on the most important information.
 Also invent a short, relevant category name (1-2 words in English) based on the text content.
-Reply STRICTLY in JSON format exactly like this: {"question": "your question", "answer": "your answer", "category": "your category"}.
+Always prepend a single, highly relevant emoji to the category name (e.g., "🧠 Psychology" or "💻 Programming").
+Reply STRICTLY in JSON format exactly like this: {"question": "your question", "answer": "your answer", "category": "your category with emoji"}.
 Text: "${text}"`;
         } else {
             prompt = `Prečítaj si nasledujúci text a vytvor 1 študijnú flash kartu (Otázka a Odpoveď) v slovenskom jazyku. 
 Zameraj sa na to najdôležitejšie.
 Tiež vymysli krátky, výstižný názov kategórie (1-2 slová v slovenčine) na základe obsahu textu.
-Odpovedz STRIKTNE v JSON formáte presne takto: {"question": "tvoja otázka", "answer": "tvoja odpoveď", "category": "tvoja kategória"}.
+Vždy pridaj na začiatok názvu kategórie jedno veľmi výstižné emoji (napr. "🧠 Psychológia" alebo "💻 Programovanie").
+Odpovedz STRIKTNE v JSON formáte presne takto: {"question": "tvoja otázka", "answer": "tvoja odpoveď", "category": "tvoja kategória s emoji"}.
 Text: "${text}"`;
         }
 
@@ -96,7 +99,8 @@ Text: "${text}"`;
         const data = await response.json();
         let aiResponseText = data.candidates[0].content.parts[0].text;
 
-        const flashcard = JSON.parse(aiResponseText);
+        let cleanText = aiResponseText.replace(/```json/g, '').replace(/```/g, '').trim();
+        const flashcard = JSON.parse(cleanText);
 
         chrome.storage.local.get({ flashcards: [], appLanguage: "sk" }, (result) => {
             const updatedFlashcards = [...result.flashcards, flashcard];

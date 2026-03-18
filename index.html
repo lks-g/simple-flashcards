@@ -51,24 +51,48 @@
         <h2 data-i18n="features.title">Why Recallify?</h2>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3 data-i18n="features.card1.title">AI-Generated Cards</h3>
-                <p data-i18n="features.card1.desc">Gemini AI reads your selected text and generates question-answer flashcards instantly.</p>
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="feature-icon">🧠</div>
+                        <h3 data-i18n="features.card1.title">AI-Generated Cards</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <p data-i18n="features.card1.desc">Gemini AI reads your selected text and generates question-answer flashcards instantly.</p>
+                    </div>
+                </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🏷️</div>
-                <h3 data-i18n="features.card2.title">Auto Categories</h3>
-                <p data-i18n="features.card2.desc">Cards are automatically sorted into smart categories based on the content you're learning.</p>
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="feature-icon">🏷️</div>
+                        <h3 data-i18n="features.card2.title">Auto Categories</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <p data-i18n="features.card2.desc">Cards are automatically sorted into smart categories based on the content you're learning.</p>
+                    </div>
+                </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3 data-i18n="features.card3.title">Flip to Study</h3>
-                <p data-i18n="features.card3.desc">Beautiful 3D flip animations in a dedicated distraction-free study mode.</p>
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="feature-icon">🔄</div>
+                        <h3 data-i18n="features.card3.title">Flip to Study</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <p data-i18n="features.card3.desc">Beautiful 3D flip animations in a dedicated distraction-free study mode.</p>
+                    </div>
+                </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🌐</div>
-                <h3 data-i18n="features.card4.title">SK / EN Support</h3>
-                <p data-i18n="features.card4.desc">Full internationalization — switch the entire UI and AI generation between Slovak and English.</p>
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="feature-icon">🌐</div>
+                        <h3 data-i18n="features.card4.title">SK / EN Support</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <p data-i18n="features.card4.desc">Full internationalization — switch the entire UI and AI generation between Slovak and English.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -198,6 +222,11 @@
                 setTimeout(() => {
                     downloadBtn.innerHTML = originalHTML;
                     downloadBtn.style.opacity = '1';
+
+                    const installSection = document.getElementById('install');
+                    if (installSection) {
+                        installSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                 }, 2000);
                 
             } catch (error) {

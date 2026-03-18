@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="quizTitle">Recallify Quiz</title>
+    <link rel="stylesheet" href="quiz.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="study-container" id="study-container">
+
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <h2 data-i18n="quizNotEnough">Na spustenie kvízu potrebujete aspoň 4 flash karty.</h2>
+            <p data-i18n="studyEmptySubtitle">Vygenerujte si vlastné karty zo zvoleného textu na akejkoľvek webstránke pomocou pravého tlačidla a vráťte sa späť.</p>
+        </div>
+
+        <div class="quiz-scene" id="quiz-scene">
+            <div class="quiz-header">
+                <span class="quiz-title" data-i18n="quizTitle">Recallify Kvíz</span>
+                <span class="score-display" id="score-display">Skóre: 0/0</span>
+            </div>
+            
+            <div class="quiz-card">
+                <div class="question-content" id="question-text">Otázka</div>
+                <div class="options-grid" id="options-grid">
+                    <!-- Options buttons will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="controls" id="controls">
+            <button class="nav-btn-text" id="next-btn" style="display: none;" data-i18n="nextBtn">Ďalšia otázka</button>
+        </div>
+
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="quiz.js"></script>
+</body>
+
+</html>

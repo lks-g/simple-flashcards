@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const langSwitcher = document.getElementById("lang-switcher");
     const studyAllBtn = document.getElementById("study-all-btn");
     const clearBtn = document.getElementById("clear-btn");
+    const navQuizBtn = document.getElementById("nav-quiz");
 
     // Edit Modal
     const editModal = document.getElementById("edit-modal");
@@ -76,6 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
     studyAllBtn.addEventListener("click", () => {
         chrome.tabs.create({ url: "study.html" });
     });
+
+    if (navQuizBtn) {
+        navQuizBtn.addEventListener("click", () => {
+            chrome.tabs.create({ url: "quiz.html" });
+        });
+    }
 
     clearBtn.addEventListener("click", () => {
         deleteModal.classList.remove("hidden");

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Buttons
     const studyAllBtn = document.getElementById("study-all-btn");
+    const quizBtn = document.getElementById("quiz-btn");
     const backToDashBtn = document.getElementById("back-to-dash-btn");
     const studyCategoryBtn = document.getElementById("study-category-btn");
     const clearBtn = document.getElementById("clear-btn");
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Settings elements
     const apiKeyInput = document.getElementById("api-key-input");
+    const llmSelect = document.getElementById("llm-select");
     const saveApiKeyBtn = document.getElementById("save-api-key-btn");
     const apiKeyStatus = document.getElementById("api-key-status");
 
@@ -67,8 +69,67 @@ document.addEventListener("DOMContentLoaded", () => {
         return i18n[currentLang][key] || key;
     }
 
+    async function loadAvailableModels(apiKey, savedModelVal) {
+        if (!apiKey) {
+            llmSelect.innerHTML = `<option value="" disabled selected data-i18n="enterApiKeyFirst">${getStr("enterApiKeyFirst")}</option>`;
+            return;
+        }
+
+        try {
+            llmSelect.innerHTML = `<option value="" disabled selected data-i18n="loadingModels">${getStr("loadingModels")}</option>`;
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+            if (!response.ok) throw new Error("Failed to fetch models");
+
+            const data = await response.json();
+            const models = data.models || [];
+
+            let validModels = models.filter(m =>
+                m.supportedGenerationMethods &&
+                m.supportedGenerationMethods.includes("generateContent") &&
+                m.name.toLowerCase().includes("gemini")
+            );
+
+            validModels = validModels.map(m => {
+                return {
+                    id: m.name.replace("models/", ""),
+                    name: m.displayName || m.name.replace("models/", "")
+                };
+            });
+
+            let flashModel = validModels.find(m => m.id.includes('flash-latest')) || validModels.find(m => m.id.includes('flash'));
+            let proModel = validModels.find(m => m.id.includes('pro-latest')) || validModels.find(m => m.id.includes('pro'));
+
+            if (!flashModel) flashModel = { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash' };
+            if (!proModel) proModel = { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro' };
+
+            let otherGemini = validModels.filter(m => m.id !== flashModel.id && m.id !== proModel.id).slice(0, 3);
+
+            const topModels = [flashModel, proModel, ...otherGemini];
+
+            llmSelect.innerHTML = "";
+            topModels.forEach(m => {
+                const opt = document.createElement("option");
+                opt.value = m.id;
+                opt.textContent = m.name;
+                llmSelect.appendChild(opt);
+            });
+
+            let targetVal = savedModelVal || flashModel.id;
+
+            if (targetVal && topModels.some(m => m.id === targetVal)) {
+                llmSelect.value = targetVal;
+            } else if (topModels.length > 0) {
+                llmSelect.value = topModels[0].id;
+            }
+
+        } catch (error) {
+            console.error("Recallify Model Fetch Error:", error);
+            llmSelect.innerHTML = `<option value="gemini-1.5-flash">Gemini 1.5 Flash (Fallback)</option>`;
+        }
+    }
+
     function loadData() {
-        chrome.storage.local.get({ flashcards: [], appLanguage: "sk", geminiApiKey: "" }, (result) => {
+        chrome.storage.local.get({ flashcards: [], appLanguage: "sk", geminiApiKey: "", selectedLLM: "gemini-1.5-flash" }, (result) => {
             allFlashcards = result.flashcards;
             currentLang = result.appLanguage;
             langSwitcher.value = currentLang;
@@ -77,6 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (result.geminiApiKey) {
                 apiKeyInput.value = result.geminiApiKey;
             }
+
+            loadAvailableModels(result.geminiApiKey, result.selectedLLM);
 
             applyTranslations();
 
@@ -112,6 +175,12 @@ document.addEventListener("DOMContentLoaded", () => {
         chrome.tabs.create({ url: "study.html" });
     });
 
+    if (quizBtn) {
+        quizBtn.addEventListener("click", () => {
+            chrome.tabs.create({ url: "quiz.html" });
+        });
+    }
+
     backToDashBtn.addEventListener("click", () => {
         currentCategoryViewName = null;
         showView(dashboardView);
@@ -137,10 +206,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- SETTINGS ---
+    llmSelect.addEventListener("change", () => {
+        const llm = llmSelect.value;
+        chrome.storage.local.set({ selectedLLM: llm }, () => {
+            const originalBorder = llmSelect.style.borderColor;
+            const originalBg = llmSelect.style.backgroundColor;
+
+            llmSelect.style.backgroundColor = "#d1fae5";
+            llmSelect.style.borderColor = "#10b981";
+
+            setTimeout(() => {
+                llmSelect.style.backgroundColor = originalBg;
+                llmSelect.style.borderColor = originalBorder;
+            }, 600);
+        });
+    });
+
     saveApiKeyBtn.addEventListener("click", () => {
         const key = apiKeyInput.value.trim();
-        if (!key) return;
-        chrome.storage.local.set({ geminiApiKey: key }, () => {
+        const llm = llmSelect.value;
+        chrome.storage.local.set({ geminiApiKey: key, selectedLLM: llm }, () => {
+            loadAvailableModels(key, llm);
             apiKeyStatus.style.display = "block";
             apiKeyStatus.textContent = getStr("apiKeySaved");
             setTimeout(() => { apiKeyStatus.style.display = "none"; }, 3000);
