@@ -30,7 +30,7 @@ const translations = {
         'nav.features': 'Funkcie',
         'nav.install': 'Inštalácia',
         'badge': '✨ Učenie poháňané AI',
-        'hero.title': 'Učte sa priamo z webu<br>s <span class="gradient-text">AI flashcardami</span>',
+        'hero.title': 'Učte sa priamo z webu<br>s <span class="gradient-text">AI flashkartami</span>',
         'hero.subtitle': 'Vyberte ľubovoľný text na akejkoľvek webovej stránke, kliknite pravým tlačidlom a Recallify okamžite vygeneruje inteligentné študijné flashcardy pomocou Google Gemini AI. Študujte múdrejšie, nie ťažšie.',
         'hero.download': 'Stiahnite Chrome rozšírenie (.zip)',
         'hero.install': 'Ako inštalovať →',
