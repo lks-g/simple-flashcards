@@ -40,7 +40,12 @@ const i18n = {
         btnSaveSettings: "Uložiť kľúč",
         apiKeySaved: "API kľúč bol úspešne uložený!",
         apiKeyMissing: "Prosím, nastavte si API kľúč v nastaveniach rozšírenia.",
-        openFullscreen: "Otvoriť na celú obrazovku"
+        openFullscreen: "Otvoriť na celú obrazovku",
+        quizBtn: "Kvíz 🧠",
+        quizTitle: "Recallify Kvíz",
+        quizNotEnough: "Na spustenie kvízu potrebujete aspoň 4 flash karty.",
+        nextBtn: "Ďalšia otázka",
+        scoreText: "Otázka číslo"
     },
     en: {
         appTitle: "Recallify",
@@ -83,6 +88,11 @@ const i18n = {
         btnSaveSettings: "Save Key",
         apiKeySaved: "API key saved successfully!",
         apiKeyMissing: "Please set your API key in the extension settings.",
-        openFullscreen: "Open Full Screen"
+        openFullscreen: "Open Full Screen",
+        quizBtn: "Quiz 🧠",
+        quizTitle: "Recallify Quiz",
+        quizNotEnough: "You need at least 4 flashcards to start a quiz.",
+        nextBtn: "Next Question",
+        scoreText: "Question no."
     }
 };

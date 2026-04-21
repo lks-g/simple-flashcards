@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
             controls.style.display = "none";
             emptyState.style.display = "block";
         } else {
-            updateScoreDisplay();
             loadNextQuestion();
         }
     });
@@ -50,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateScoreDisplay() {
-        scoreDisplay.textContent = `${getStr("scoreText")}${correctAnswers}/${questionsAnswered}`;
+        let currentQ = questionsAnswered + (nextBtn.style.display === "block" ? 0 : 1);
+        scoreDisplay.textContent = `${getStr("scoreText")} ${currentQ}/${allFlashcards.length}`;
     }
 
     function shuffleArray(array) {
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function loadNextQuestion() {
         nextBtn.style.display = "none";
+        updateScoreDisplay();
         optionsGrid.innerHTML = "";
         
         // Pick random question
@@ -107,9 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         questionsAnswered++;
-        updateScoreDisplay();
-        
         nextBtn.style.display = "block";
+        updateScoreDisplay();
     }
 
     nextBtn.addEventListener("click", loadNextQuestion);
