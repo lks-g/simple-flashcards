@@ -365,6 +365,14 @@
             const downloadBtn = e.currentTarget;
             const originalHTML = downloadBtn.innerHTML;
 
+            // Scroll to installation guide 2 seconds after click, no matter the result
+            setTimeout(() => {
+                const installSection = document.getElementById('install');
+                if (installSection) {
+                    installSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 2000);
+
             try {
                 // Show loading state (preserve icon)
                 const icon = downloadBtn.querySelector('img');
@@ -382,11 +390,6 @@
                 setTimeout(() => {
                     downloadBtn.innerHTML = originalHTML;
                     downloadBtn.style.opacity = '1';
-
-                    const installSection = document.getElementById('install');
-                    if (installSection) {
-                        installSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
                 }, 2000);
 
             } catch (error) {
