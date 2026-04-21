@@ -255,6 +255,44 @@
             updateLanguageToggle();
         }
 
+        function getBrowser() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.indexOf('firefox') > -1) {
+                return 'firefox';
+            }
+            return 'chrome'; // default
+        }
+
+        function setupBrowserSpecificUI() {
+            const browser = getBrowser();
+            
+            if (browser === 'firefox') {
+                const downloadBtn = document.getElementById('download-btn');
+                if (downloadBtn) {
+                    const icon = downloadBtn.querySelector('img');
+                    const textSpan = downloadBtn.querySelector('span[data-i18n]');
+                    if (icon) {
+                        icon.src = './assets/Firefox_logo.svg';
+                        icon.alt = 'Firefox icon';
+                    }
+                    if (textSpan) textSpan.setAttribute('data-i18n', 'hero.downloadFirefox');
+                }
+
+                const installSubtitle = document.querySelector('.install-subtitle');
+                if (installSubtitle) installSubtitle.setAttribute('data-i18n', 'install.subtitleFirefox');
+
+                const step2Title = document.querySelector('.step-card:nth-child(2) h3');
+                const step2Desc = document.querySelector('.step-card:nth-child(2) p');
+                if (step2Title) step2Title.setAttribute('data-i18n', 'install.step2.titleFirefox');
+                if (step2Desc) step2Desc.setAttribute('data-i18n-html', 'install.step2.descFirefox');
+
+                const step3Title = document.querySelector('.step-card:nth-child(3) h3');
+                const step3Desc = document.querySelector('.step-card:nth-child(3) p');
+                if (step3Title) step3Title.setAttribute('data-i18n', 'install.step3.titleFirefox');
+                if (step3Desc) step3Desc.setAttribute('data-i18n-html', 'install.step3.descFirefox');
+            }
+        }
+
         function applyTranslations() {
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(element => {
@@ -293,7 +331,10 @@
                         downloadBtn.appendChild(icon);
                         downloadBtn.appendChild(textSpan);
                     }
-                    textSpan.textContent = translations[currentLanguage]['hero.download'];
+                    const key = textSpan.getAttribute('data-i18n') || 'hero.download';
+                    if (translations[currentLanguage][key]) {
+                        textSpan.textContent = translations[currentLanguage][key];
+                    }
                 }
             }
         }
@@ -314,6 +355,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
+            setupBrowserSpecificUI();
             applyTranslations();
             updateLanguageToggle();
         });
